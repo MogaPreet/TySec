@@ -1,0 +1,116 @@
+import React from "react";
+import Tilt from "react-tilt";
+import { motion } from "framer-motion";
+import {Routes, Route, useNavigate} from 'react-router-dom';
+
+import { styles } from "../styles";
+import { github } from "../assets";
+import { SectionWrapper } from "../hoc";
+import { projects } from "../constants";
+import { fadeIn, textVariant } from "../utils/motion";
+import BlogOne from "./BlogOne";
+
+const ProjectCard = ({
+  index,
+  name,
+  description,
+  tags,
+  image,
+  source_code_link,
+}) => {
+  const navigate = useNavigate();
+  const navigateBlog = () => {
+    // 👇️ navigate to /contacts
+    navigate(`/blog/${index}`);
+  };
+  return (
+    
+    <>
+    <motion.div variants={fadeIn("up", "spring", index * 0.5, 0.75)}>
+      <Tilt
+        options={{
+          max: 45,
+          scale: 1,
+          speed: 450,
+        }}
+        className='bg-tertiary p-5 rounded-2xl sm:w-[360px] w-full'
+      >
+        <div className='relative w-full h-[230px]'>
+          <img
+            src={image}
+            alt='project_image'
+            className='w-full h-full object-cover rounded-2xl'
+          />
+
+          <div className='absolute inset-0 flex justify-end m-3 card-img_hover'>
+        
+          </div>
+        </div>
+
+        <div className='mt-5'>
+          <h3 className='text-white font-bold text-[24px]'>{name}</h3>
+          <p className='mt-2 text-secondary text-[14px]'>{description}</p>
+        </div>
+
+        <div className='mt-4 flex flex-wrap gap-2'>
+          {tags.map((tag) => (
+            <p
+              key={`${name}-${tag.name}`}
+              className={`text-[14px] ${tag.color}`}
+            >
+              #{tag.name}
+            </p>
+          ))}
+        </div>
+        <button onClick={navigateBlog} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" >Read More</button>
+        {/* <a href="./BlogOne" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    Read more
+                
+                </a> */}
+         
+        
+      </Tilt>
+      
+    </motion.div>
+    
+    </>
+
+  );
+  
+};
+
+const Works = () => {
+  return (
+    <>
+
+      <motion.div variants={textVariant()}>
+        <p className={`${styles.sectionSubText} text-center`}>
+        Insights from the Cyber Trenches
+        </p>
+        <h2 className={`${styles.sectionHeadText} text-center`}>
+        Our Blog.
+        </h2>
+      </motion.div>
+      <div className='w-full flex'>
+        <motion.p
+          variants={fadeIn("", "", 0.1, 1)}
+          className='mt-3 text-secondary text-[17px] max-w-3xl leading-[30px]'
+        >
+        </motion.p>
+      </div>
+
+      <div className='mt-20 flex flex-wrap gap-7'>
+        {projects.map((project, index) => (
+          <ProjectCard key={`project-${index}`} index={index} {...project} />
+        ))}
+      </div>
+      {/* <button type="submit">
+      <a href="https://codefrontend.com" target="_blank" rel="noopener noreferrer">
+            Go to codefrontend.com
+          </a>
+      </button> */}
+    </>
+  );
+};
+
+export default SectionWrapper(Works, "Works");
